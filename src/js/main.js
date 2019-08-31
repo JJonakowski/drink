@@ -21,42 +21,27 @@ if ('serviceWorker' in navigator) {
 const addGlass = document.querySelector('.drink__buttons--add--js');
 const remGlass = document.querySelector('.drink__buttons--del--js');
 const counter = document.querySelector('.drink__glass--no--js');
-const lastDay = document.querySelector('.drink__last--day--js');
 const date = new Date().toISOString().slice(0, 10);
-const getKey = localStorage.getItem('date');
+const lastDay = document.querySelector('.drink__last--day--js');
 
-counter.innerHTML = localStorage.getItem('counter');
-
-if( getKey == null ) {
-  localStorage.setItem('date', date);
-  localStorage.setItem('counter', 0);
-  counter.innerHTML = localStorage.getItem('counter');
+if(!localStorage.getItem(date)) {
+  localStorage.setItem(date, 0);
+  counter.innerHTML = 0;
 }
 else 
 {
-  if(getKey !== date) {
-    const lastCounter = localStorage.setItem('lastCounter', counter.innerText);
-    localStorage.setItem('counter', 0);
-    counter.innerHTML = localStorage.getItem('counter');
-    localStorage.setItem('date', date);
-    lastDay.innerHTML = `Wczoraj wypiłeś: ${localStorage.getItem('lastCounter')} kieliszków!`;
-  }
-  else {
-    if(localStorage.getItem('lastCounter')) {
-    lastDay.innerHTML = `Wczoraj wypiłeś: ${localStorage.getItem('lastCounter')} kieliszków!`;
-    }
-  }
+  counter.innerHTML = localStorage.getItem(date);
 }
 
 addGlass.addEventListener('click', (e) => {
-  e.preventDefault();
-  localStorage.setItem('counter', ++counter.innerText);
+  localStorage.setItem(date, parseInt(localStorage.getItem(date)) +1);
+  counter.innerHTML= localStorage.getItem(date);
 })
 
 remGlass.addEventListener('click', (e) => {
-  e.preventDefault();
-  const getCounter = localStorage.getItem('counter');
+  const getCounter = localStorage.getItem(date);
   if(getCounter > 0) {
-    localStorage.setItem('counter', --counter.innerText);
+    localStorage.setItem(date, parseInt(localStorage.getItem(date)) -1);
+    counter.innerHTML= localStorage.getItem(date);
   }
 })
