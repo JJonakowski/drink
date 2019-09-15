@@ -17,42 +17,45 @@ html {
   display: flex;
   flex-direction: column;
   align-items: center;
-}
-
-.drink__glass {
-  width: 280px;
-  height: 280px;
-  background: url('../assets/img/water-glass.svg') center center;
-  background-size: contain;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 112px;
-  line-height: 131px;
-  &--no {
-    padding-top: 40px;
+  &__menu {
+  margin: 10px 0 2px 0;
+  }
+  &__buttons {
+  padding: 12px;
+  font-size: 18px;
+  min-width: 95px;
+  border-radius: 6px;
+  border: none;
+  font-weight: bold;
+  &--add {
+    background-color: rgb(55, 177, 55);
+    }
+  &--del {
+    background-color: rgb(255, 83, 83);
+    }
   }
 }
 
-.drink__buttons--add {
-  padding: 12px;
-  font-size: 18px;
-  min-width: 216px;
-  border-radius: 4px;
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-  background: white;
-  border: none;
-  margin: 48px 0 37px 0;
+.bottom__button {
+  margin: 15px 0 20px 0;
+  height: 30px;
+  min-width: 180px;
+  border-radius: 6px;
+  background: none;
 }
 
-.drink__buttons--del {
-  padding: 12px;
-  font-size: 14px;
-  min-width: 180px;
-  border: none;
-  border-radius: 4px;
-  background: white;
-  margin-bottom: 40px;
-  border-radius: 4px;
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+.drink__glass {
+  width: 340px;
+  height: 340px;
+  background: url('../assets/img/water-glass.svg') center center;
+  background-size: contain;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: 65px;
+  line-height: 70px;
+  &--no {
+    padding-top: 40px;
+  }
 }

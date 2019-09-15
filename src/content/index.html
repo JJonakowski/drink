@@ -16,19 +16,36 @@
   <link rel="icon" type="image/png" href="assets/pwa/icons/iconb-192x192.png" />
 
   <link href="css/main.css" rel="stylesheet" type="text/css">
+
 </head>
 
 <body>
   <main class="drink">
     
     <div class="drink__glass">
-      <div class="drink__glass--no drink__glass--no--js"></div>
+      <div class="drink__glass--no water__no--js"></div>  
+      <div class="drink__beer--no beer__no--js"></div>
+      <div class="drink__wodka--no wodka__no--js"></div>
     </div>
-    
-      <button class="drink__buttons--add drink__buttons--add--js">Dodaj szklanke</button>
-      <button class="drink__buttons--del drink__buttons--del--js">Usuń szklanke</button>
+      
+    <div class="drink__menu">
+      <button class="drink__buttons--add drink__buttons water__buttonadd--js">Woda</button>
+      <button class="drink__buttons--del drink__buttons water__buttondel--js">Woda</button> 
+    </div>
 
-    <div class="drink__last--day drink__last--day--js"></div>
+    <div class="drink__menu">
+      <button class="drink__buttons--add drink__buttons beer__buttonadd--js">Piwo</button>      
+      <button class="drink__buttons--del drink__buttons beer__buttondel--js">Piwo</button>
+    </div>
+
+    <div class="drink__menu">
+      <button class="drink__buttons--add drink__buttons wodka__buttonadd--js">Wódka</button>
+      <button class="drink__buttons--del drink__buttons wodka__buttondel--js">Wódka</button>
+    </div>
+
+    <div class="bottom__button">
+        <button class="bottom__button del__all--js">Usuń wszystko</button>      
+    </div>
 
   </main>
   <script src="js/main.js"></script>
