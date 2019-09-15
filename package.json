@@ -48,5 +48,7 @@
       "@babel/preset-env"
     ]
   },
-  "dependencies": {}
+  "dependencies": {
+    "js-datepicker": "^5.0.2"
+  }
 }

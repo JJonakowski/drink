@@ -24,31 +24,28 @@ const counterr = document.querySelector('.drink__glass--no--js');
 const date = new Date().toISOString().slice(0, 10);
 let tablicaDaty = [date];
 
-if(!localStorage.getItem("tablicaDaty", date) || !localStorage.getItem(`day ${date}`)) {
-  localStorage.setItem("tablicaDaty", JSON.stringify(tablicaDaty));
+if(!localStorage.getItem(`day ${date}`)) {
   counterr.innerHTML = "0";
-  localStorage.setItem(`day ${date}`, 0);
-}
-else {
-  counterr.innerHTML = localStorage.getItem(`day ${date}`);
-  const x = JSON.parse(localStorage.getItem('tablicaDaty'));
-  const y = localStorage.getItem('tablicaDaty');
-  
-  for (let i=0; i< y.length; i++) {
-    if( y[i] == [tablicaDaty]) {
-      console.log("jest juz w tablicy");
-      break;
-    }
-    else
-    {
-      let oo = y.push(date);
-      localStorage.setItem("tablicaDaty", oo);
-      break;
-    }
   }
-}
+  else {
+    counterr.innerHTML = localStorage.getItem(`day ${date}`);
+  }
 
 addGlass.addEventListener('click', (e) => {
+  if(!localStorage.getItem("tablicaDaty", date)) {
+    localStorage.setItem("tablicaDaty", JSON.stringify(tablicaDaty)); }
+    else {
+      const x = JSON.parse(localStorage.getItem('tablicaDaty'));
+      if( x[x.length-1] != date ) { 
+        x.push(date);
+        localStorage.setItem("tablicaDaty", JSON.stringify(x));
+      }
+    }
+  
+  if(!localStorage.getItem(`day ${date}`)) {
+    localStorage.setItem(`day ${date}`, 0);
+    }
+  
   localStorage.setItem(`day ${date}`, parseInt(localStorage.getItem(`day ${date}`)) +1);
   ++counterr.innerHTML;
 })
