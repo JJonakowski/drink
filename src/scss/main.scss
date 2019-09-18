@@ -10,9 +10,23 @@ html {
 *, *:before, *:after {
   box-sizing: inherit;
 }
+.calendar {
+  font-style: bold;
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+  &__button {
+    background: black;
+    color: white;
+  }
+}
+
+.datepicker {
+  max-width: 140px;
+}
 
 .drink {
-  margin-top: 203px;
+  margin-top: 80px;
   font-weight: 500;
   display: flex;
   flex-direction: column;
@@ -37,7 +51,7 @@ html {
 }
 
 .bottom__button {
-  margin: 15px 0 20px 0;
+  margin: 15px 0 40px 0;
   height: 30px;
   min-width: 180px;
   border-radius: 6px;
@@ -58,4 +72,11 @@ html {
   &--no {
     padding-top: 40px;
   }
+}
+
+.inputText {
+  
+  font-size: 20px;
+  max-width: 340px;
+  padding-bottom: 40px;
 }

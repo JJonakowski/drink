@@ -13,9 +13,25 @@
   <link rel="manifest" href="manifest.json" />
   <meta name="mobile-web-app-capable" content="yes" />
   <link rel="apple-touch-icon" sizes="192x192" href="assets/pwa/icons/iconb-192x192.png">
-  <link rel="icon" type="image/png" href="assets/pwa/icons/iconb-192x192.png" />
+  <link rel="icon" type="image/png" href="assets/pwa/icons/iconb-192x192.png">
+
+  
+  <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+  <script>
+    $( function() {
+      $( "#datepicker" ).datepicker();
+      format: 'MM-YYYY';
+    } );
+  </script>
+
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+  <!-- <link rel="stylesheet" href="/resources/demos/style.css"> -->
+ 
 
   <link href="css/main.css" rel="stylesheet" type="text/css">
+  
+
 
 </head>
 
@@ -47,6 +63,14 @@
         <button class="bottom__button del__all--js">Usuń wszystko</button>      
     </div>
 
+    
+      <p class="calendar">Data: 
+        <input type="text" id="datepicker" class="datepicker datepicker--js">
+        <button class="calendar__button calendar__button--js">X</button>
+      </p> 
+      
+      <div class="comment comment--js"><h1 class="inputText inputText--js"></h1></div>
+  
   </main>
   <script src="js/main.js"></script>
 </body>
