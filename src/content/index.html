@@ -15,23 +15,7 @@
   <link rel="apple-touch-icon" sizes="192x192" href="assets/pwa/icons/iconb-192x192.png">
   <link rel="icon" type="image/png" href="assets/pwa/icons/iconb-192x192.png">
 
-  
-  <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-  <script>
-    $( function() {
-      $( "#datepicker" ).datepicker();
-      format: 'MM-YYYY';
-    } );
-  </script>
-
-  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-  <!-- <link rel="stylesheet" href="/resources/demos/style.css"> -->
- 
-
   <link href="css/main.css" rel="stylesheet" type="text/css">
-  
-
 
 </head>
 
@@ -39,24 +23,24 @@
   <main class="drink">
     
     <div class="drink__glass">
-      <div class="drink__glass--no water__no--js"></div>  
+      <div class="drink__glass--no water__no--js"></div>
       <div class="drink__beer--no beer__no--js"></div>
       <div class="drink__wodka--no wodka__no--js"></div>
     </div>
       
     <div class="drink__menu">
-      <button class="drink__buttons--add drink__buttons water__buttonadd--js">Woda</button>
-      <button class="drink__buttons--del drink__buttons water__buttondel--js">Woda</button> 
+      <button class="drink__buttons--add drink__buttons" data-key="water">Woda</button>
+      <button class="drink__buttons--del drink__buttons" data-key="water">Woda</button>
     </div>
 
     <div class="drink__menu">
-      <button class="drink__buttons--add drink__buttons beer__buttonadd--js">Piwo</button>      
-      <button class="drink__buttons--del drink__buttons beer__buttondel--js">Piwo</button>
+      <button class="drink__buttons--add drink__buttons" data-key="beer">Piwo</button>
+      <button class="drink__buttons--del drink__buttons" data-key="beer">Piwo</button>
     </div>
 
     <div class="drink__menu">
-      <button class="drink__buttons--add drink__buttons wodka__buttonadd--js">Wódka</button>
-      <button class="drink__buttons--del drink__buttons wodka__buttondel--js">Wódka</button>
+      <button class="drink__buttons--add drink__buttons" data-key="vodka">Wódka</button>
+      <button class="drink__buttons--del drink__buttons" data-key="vodka">Wódka</button>
     </div>
 
     <div class="bottom__button">
@@ -65,7 +49,7 @@
 
     
       <p class="calendar">Data: 
-        <input type="text" id="datepicker" class="datepicker datepicker--js">
+        <input type="text" id="datepicker" class="datepicker">
         <button class="calendar__button calendar__button--js">X</button>
       </p> 
       
