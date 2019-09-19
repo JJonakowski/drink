@@ -17,44 +17,38 @@ if ('serviceWorker' in navigator) {
 
 import datepicker from 'js-datepicker';
 
-const picker = datepicker('#datepicker', {
+const picker = datepicker('#datepicker', { //datepicker instance
     formatter: (input, date, instance) => {
         const value = date.toLocaleDateString()
         input.value = date.toJSON().slice(0, 10)
     }
 });
-
-const drinks = new Map([
-  ['water', {
-    label: 'Woda',
-    pos: 0,
-    element: document.querySelector('.water__no--js')
-  }],
-  ['beer', {
-    label: 'Piwo',
-    pos: 1,
-    element: document.querySelector('.beer__no--js')
-  }],
-  ['vodka', {
-    label: 'Wódka',
-    pos: 2,
-    element: document.querySelector('.wodka__no--js')
-  }]
+const drinks = new Map([ //drinks config
+    ['water', {
+        label: 'Woda',
+        pos: 0,
+        element: document.querySelector('.water__no--js')
+    }],
+    ['beer', {
+        label: 'Piwo',
+        pos: 1,
+        element: document.querySelector('.beer__no--js')
+    }],
+    ['vodka', {
+        label: 'Wódka',
+        pos: 2,
+        element: document.querySelector('.wodka__no--js')
+    }]
 ]);
+const addButtons = document.querySelectorAll('.drink__buttons--add'); //add buttons
+const delButtons = document.querySelectorAll('.drink__buttons--del'); //remove buttons
+const delAllButton = document.querySelector('.del__all--js');
+let currentDate = new Date().toISOString().slice(0, 10); //init selected date
 
-const addButtons = document.querySelectorAll('.drink__buttons--add');
-const delButtons = document.querySelectorAll('.drink__buttons--del')
 
 // Zmienne //
+let calendar, calButton, naglowek;
 
-let remAll, date, tablicaDaty, tablicaDrink, calendar, calButton, naglowek;
-
-// Tablice //
-remAll = document.querySelector('.del__all--js');
-
-date = new Date().toISOString().slice(0, 10);
-tablicaDaty = [date];
-tablicaDrink = [0, 0, 0];
 
 // KALENDARZ //
 calendar = document.querySelector('.datepicker--js');
@@ -63,47 +57,83 @@ naglowek = document.querySelector('.inputText--js');
 
 let calVal;
 
-/*
-calButton.addEventListener('click', (e) => {
-    kalendarz();
-})
-*/
-
 // FUNKCJE //
 
-let sprawdzTablice = (nazwaPlynu) => {
-    if (!localStorage.getItem("tablicaDaty", date)) {
-        localStorage.setItem("tablicaDaty", JSON.stringify(tablicaDaty));
+let storageIndexInit = (date) => {
+    if (!localStorage.getItem("daysIndex")) {
+        localStorage.setItem("daysIndex", JSON.stringify([]));
+    }
+};
+
+let storageIndexAdd = (date) => {
+    let dates = JSON.parse(localStorage.getItem('daysIndex'));
+    if (!dates.includes(date)) {
+        dates.push(date);
+        localStorage.setItem("daysIndex", JSON.stringify(dates));
+    }
+};
+
+let storageIndexRemove = (date) => {
+    let dates = JSON.parse(localStorage.getItem('daysIndex'));
+    if (dates.includes(date)) {
+        dates.splice(dates.indexOf(date), 1);
+        localStorage.setItem("daysIndex", JSON.stringify(dates));
+    }
+};
+
+let storageDayInit = (date) => {
+    let value = [0, 0, 0];
+    localStorage.setItem(`day${date}`, JSON.stringify(value));
+    drinks.forEach((obj) => {
+        obj.element.innerHTML = 0;
+    });
+    return value;
+};
+
+let storageDayGet = (date) => {
+    let value = localStorage.getItem(`day${date}`);
+    if (value !== null) {
+        value = JSON.parse(value);
+        drinks.forEach((obj) => {
+            obj.element.innerHTML = value[obj.pos];
+        })
     } else {
-        const x = JSON.parse(localStorage.getItem('tablicaDaty'));
-        if (x[x.length - 1] != date) {
-            x.push(date);
-            localStorage.setItem("tablicaDaty", JSON.stringify(x));
-        }
+        value = storageDayInit(date)
     }
+    return value;
+};
 
-    if (!localStorage.getItem(`day ${date}`)) {
-        let tablicaDrink = [0, 0, 0];
-        localStorage.setItem(`day ${date}`, JSON.stringify(tablicaDrink));
+let storageDaySet = (date, value) => {
+    localStorage.setItem(`day${date}`, JSON.stringify(value));
+    drinks.forEach((obj) => {
+        obj.element.innerHTML = value[obj.pos];
+    })
+};
+
+let storageDayHas = (date) => {
+    return localStorage.getItem(`day${date}`) !== null;
+};
+
+let add = (drink, date) => {
+    storageIndexAdd(date);
+    if (!storageDayHas(date)) {
+        storageDayInit(date);
     }
+    let data = storageDayGet(date);
+    ++data[drinks.get(drink).pos];
+    storageDaySet(date, data);
+};
 
-    tablicaDrink = JSON.parse(localStorage.getItem(`day ${date}`, tablicaDrink));
-    ++tablicaDrink[drinks.get(nazwaPlynu).pos];
-    localStorage.setItem(`day ${date}`, JSON.stringify(tablicaDrink));
-    ++drinks.get(nazwaPlynu).element.innerHTML;
-}
-
-let zmniejszLicznik = (nazwaPlynu) => {
-    if (localStorage.getItem(`day ${date}`)) {
-        tablicaDrink = JSON.parse(localStorage.getItem(`day ${date}`, tablicaDrink));
-
-        if (tablicaDrink[drinks.get(nazwaPlynu).pos] > 0) {
-            --tablicaDrink[drinks.get(nazwaPlynu).pos];
-            localStorage.setItem(`day ${date}`, JSON.stringify(tablicaDrink));
-            --drinks.get(nazwaPlynu).element.innerHTML;
-        }
+let sub = (drink, date) => {
+    if (!storageDayHas(date)) {
+        storageDayInit(date);
     }
-}
+    let data = storageDayGet(date);
+    if (data[drinks.get(drink).pos] > 0) {
+        --data[drinks.get(drink).pos];
+        storageDaySet(date, data);
+    }
+};
 
 function kalendarz() {
     let calVal = calendar.value;
@@ -113,53 +143,40 @@ function kalendarz() {
         if (localStorage.getItem(`day ${calVal}`)) {
             let wysw = JSON.parse(localStorage.getItem(`day ${calVal}`));
             naglowek.innerHTML = `Dnia ${calVal} wypiłeś ${wysw[0]} szklanek wody, ${wysw[1]} piwa i ${wysw[2]} wódki`;
-            tablicaDrink = JSON.parse(localStorage.getItem(`day ${calVal}`, tablicaDrink));
-            water.innerHTML = tablicaDrink[0];
-            beer.innerHTML = tablicaDrink[1];
-            wodka.innerHTML = tablicaDrink[2];
+            currentDateCounter = JSON.parse(localStorage.getItem(`day ${calVal}`, currentDateCounter));
+            water.innerHTML = currentDateCounter[0];
+            beer.innerHTML = currentDateCounter[1];
+            wodka.innerHTML = currentDateCounter[2];
         }
 
     } else {
-        tablicaDrink = JSON.parse(localStorage.getItem(`day ${date}`, tablicaDrink));
-        water.innerHTML = tablicaDrink[0];
-        beer.innerHTML = tablicaDrink[1];
-        wodka.innerHTML = tablicaDrink[2];
+        currentDateCounter = JSON.parse(localStorage.getItem(`day${date}`, currentDateCounter));
+        water.innerHTML = currentDateCounter[0];
+        beer.innerHTML = currentDateCounter[1];
+        wodka.innerHTML = currentDateCounter[2];
         naglowek.innerHTML = null;
     }
 }
 
+// events //
+const handleAddDelClick = (e) => {
+    let button = e.currentTarget;
+    if (e.currentTarget.classList.contains('drink__buttons--add')) {
+        add(button.getAttribute('data-key'), currentDate);
+    } else {
+        sub(button.getAttribute('data-key'), currentDate);
+    }
+};
+
+const handleDelAllClick = (e) => {
+    storageDayInit(currentDate);
+};
+
+addButtons.forEach(button => button.addEventListener('click', handleAddDelClick));
+delButtons.forEach(button => button.addEventListener('click', handleAddDelClick));
+delAllButton.addEventListener('click', handleDelAllClick);
 
 // START //
 
-drinks.forEach(obj => (obj) => {
-  if (!localStorage.getItem(`day ${date}`)) {
-    obj.element.innerHTML = 0;
-  } else {
-    tablicaDrink = JSON.parse(localStorage.getItem(`day ${date}`, tablicaDrink));
-    obj.element.innerHTML = tablicaDrink[obj.pos];
-  }
-});
-
-// events //
-const handleClick = (e) => {
-  let button = e.currentTarget;
-  if( e.currentTarget.classList.contains('drink__buttons--add') ) {
-    sprawdzTablice(button.getAttribute('data-key'));
-  } else {
-    zmniejszLicznik(button.getAttribute('data-key'));
-  }
-};
-addButtons.forEach(button => button.addEventListener('click', handleClick));
-delButtons.forEach(button => button.addEventListener('click', handleClick));
-
-// USUN WSZYSTKO //
-
-remAll.addEventListener('click', (e) => {
-    if (localStorage.getItem(`day ${date}`)) {
-        let tablicaDrink = [0, 0, 0];
-        localStorage.setItem(`day ${date}`, JSON.stringify(tablicaDrink));
-        water.innerHTML = 0;
-        beer.innerHTML = 0;
-        wodka.innerHTML = 0;
-    }
-})
+storageIndexInit();
+storageDayGet(currentDate);
